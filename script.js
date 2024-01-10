@@ -72,3 +72,31 @@ function getPasswordOptions() {
     characterTypesSelected: characterTypesSelected
   };
 }
+
+// Function for generating a prompt asking for character type inclusion
+function getCharacterTypeResponse(characterType) {
+  var validCharacterTypeResponse = false;
+
+  while(! validCharacterTypeResponse) {
+    var passwordCharacterTypeResponse = prompt(`Would you like your password to include ${characterType} characters? Please enter YES or NO.`);
+    
+    if (passwordCharacterTypeResponse === null) {
+      return null;
+    }
+    
+    var passwordCharacterTypeResponseCleaned = passwordCharacterTypeResponse.toUpperCase().trim();
+
+    let truthyResponses = ['YES', 'Y', 'TRUE', 'T'];
+    let falsyResponses = ['NO', 'N', 'FALSE', 'F'];
+
+    if (truthyResponses.includes(passwordCharacterTypeResponseCleaned)) {
+      alert(`Thank you. Your password will contain ${characterType} characters.`);
+      return true;
+    } else if (falsyResponses.includes(passwordCharacterTypeResponseCleaned)) {
+      alert(`Thank you. Your password will not contain ${characterType} characters.`);
+      return false;
+    } else {
+      alert('Your response was invalid. Please try again.');
+    }
+  }
+}
