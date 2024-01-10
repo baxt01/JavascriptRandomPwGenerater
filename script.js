@@ -107,3 +107,43 @@ function getRandom(arr) {
 
   return arr[randomNumberUpToArrayLength];
 }
+
+// Function to generate password with user input
+function generatePassword() {
+  var passwordOptions = getPasswordOptions();
+
+  if (passwordOptions.error) {
+    alert('Password generation cancelled.');
+    return '';
+  }
+
+  var passwordCharacters = [];
+
+  // first get one character from each of the character types that the user specified
+
+  for (var i = 0; i < passwordOptions.characterTypesSelected.length; i++) {
+    // get a character from the corresponding array and add it to the passwordCharacters string
+    var characterType = passwordOptions.characterTypesSelected[i];
+    passwordCharacters.push(getCharacterFromType(characterType));
+  }
+
+  // randomly shuffle array to prevent first 1-4 characters of password being of a predictable character type
+  shuffle(passwordCharacters);
+
+  // then fill up the rest of the passwordCharacters string with random characters from user's specified character types
+  while (passwordCharacters.length < passwordOptions.passwordLength) {
+    var characterType = getRandom(passwordOptions.characterTypesSelected);
+    var characterToAddToPassword = getCharacterFromType(characterType);
+
+    if (characterToAddToPassword === '') {
+      alert('FATAL ERROR: Terminating password generation. An unidentified character type was specified for use in your password.')
+      return '';
+    }
+
+    passwordCharacters.push(characterToAddToPassword);
+  }
+  
+  // join all elements in array to a single string
+  return passwordCharacters.join('');
+}
+
